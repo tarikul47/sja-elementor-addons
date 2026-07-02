@@ -167,24 +167,28 @@ class SJA_Hero_Widget extends \Elementor\Widget_Base
 				'default' => 'no',
 			]
 		);
-
 		$this->add_control(
-			'price_orb_label',
+			'enrol_label',
 			[
-				'label' => __('Price Orb Label', 'sja-elementor-addons'),
+				'label' => __('Enrol Text', 'sja-elementor-addons'),
 				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => __('Enrol From', 'sja-elementor-addons'),
-				'condition' => ['enable_price_orb' => 'yes'],
+				'default' => __('From enrol', 'sja-elementor-addons'),
 			]
 		);
-
 		$this->add_control(
-			'price_orb_amount',
+			'price',
 			[
-				'label' => __('Price Orb Amount', 'sja-elementor-addons'),
+				'label' => __('Price', 'sja-elementor-addons'),
 				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => '£50',
-				'condition' => ['enable_price_orb' => 'yes'],
+				'default' => __('£50', 'sja-elementor-addons'),
+			]
+		);
+		$this->add_control(
+			'today_label',
+			[
+				'label' => __('Today Label', 'sja-elementor-addons'),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => __('to day', 'sja-elementor-addons'),
 			]
 		);
 
@@ -218,11 +222,15 @@ class SJA_Hero_Widget extends \Elementor\Widget_Base
 		$settings = $this->get_settings_for_display();
 		$show_image = $settings['show_hero_image'] === 'yes';
 		$enable_orb = $settings['enable_price_orb'] === 'yes';
+
+		// Check if we are currently looking at the Elementor Editor backend
+		$is_editor = \Elementor\Plugin::$instance->editor->is_edit_mode();
+		$reveal_class = $is_editor ? '' : 'reveal'; // Removes opacity:0 wrapper inside editor
 		?>
 		<section class="hero">
 			<div class="container">
 				<div class="grid <?php echo !$show_image ? 'hero-centered' : ''; ?>">
-					<div class="reveal">
+					<div class="<?php echo esc_attr($reveal_class); ?>">
 						<?php if (!empty($settings['eyebrow'])): ?>
 							<span class="eyebrow" style="color:var(--green)"><?php echo esc_html($settings['eyebrow']); ?></span>
 						<?php endif; ?>
@@ -278,20 +286,30 @@ class SJA_Hero_Widget extends \Elementor\Widget_Base
 							</div>
 						<?php endif; ?>
 					</div>
+
 					<?php if ($show_image): ?>
-						<div class="reveal">
-							<div class="hero-visual">
+						<div class="premium-img-wrap">
+							<?php if ($enable_orb): ?>
+								<div class="premium-badge">
+
+									<div class="label"><?php echo esc_html($settings['enrol_label']); ?></div>
+									<div class="amount"><?php echo esc_html($settings['price']); ?></div>
+									<div class="sub"><?php echo esc_html($settings['today_label']); ?></div>
+								</div>
+							<?php endif; ?>
+							<div class="browser-mockup">
+								<div class="browser-topbar">
+									<div class="browser-dots">
+										<span class="dot-red"></span>
+										<span class="dot-yellow"></span>
+										<span class="dot-green"></span>
+									</div>
+								</div>
 								<?php if (!empty($settings['hero_image']['url'])): ?>
 									<img src="<?php echo esc_url($settings['hero_image']['url']); ?>"
 										alt="<?php echo esc_attr($settings['hero_image_alt']); ?>" />
 								<?php else: ?>
 									<img src="https://via.placeholder.com/800x600" alt="Placeholder" />
-								<?php endif; ?>
-								<?php if ($enable_orb): ?>
-									<div class="price-orb">
-										<small><?php echo esc_html($settings['price_orb_label']); ?></small>
-										<strong><?php echo esc_html($settings['price_orb_amount']); ?></strong>
-									</div>
 								<?php endif; ?>
 							</div>
 						</div>

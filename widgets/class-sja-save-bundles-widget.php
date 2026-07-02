@@ -226,10 +226,13 @@ class SJA_Save_Bundles_Widget extends \Elementor\Widget_Base
     protected function render()
     {
         $settings = $this->get_settings_for_display();
+        // Check if we are currently looking at the Elementor Editor backend
+        $is_editor = \Elementor\Plugin::$instance->editor->is_edit_mode();
+        $reveal_class = $is_editor ? '' : 'reveal'; // Removes opacity:0 wrapper inside editor
         ?>
         <section id="bundles" class="dark" style="background:linear-gradient(180deg,var(--navy-deep),var(--navy));color:#fff">
             <div class="container">
-                <div class="reveal">
+                <div class="<?php echo esc_attr($reveal_class); ?>">
                     <?php if (!empty($settings['eyebrow'])): ?>
                         <span class="eyebrow white"><?php echo esc_html($settings['eyebrow']); ?></span>
                     <?php endif; ?>
@@ -244,7 +247,7 @@ class SJA_Save_Bundles_Widget extends \Elementor\Widget_Base
                 </div>
 
                 <?php if (!empty($settings['checklist_items'])): ?>
-                    <div class="checklist reveal" style="grid-template-columns:repeat(3,1fr);max-width:1000px">
+                    <div class="checklist <?php echo esc_attr($reveal_class); ?>" style="grid-template-columns:repeat(3,1fr);max-width:1000px">
                         <?php foreach ($settings['checklist_items'] as $item): ?>
                             <span>
                                 <?php if (!empty($item['icon'])): ?>
@@ -259,7 +262,7 @@ class SJA_Save_Bundles_Widget extends \Elementor\Widget_Base
                 <?php if (!empty($settings['bundle_cards'])): ?>
                     <div class="bundle-grid">
                         <?php foreach ($settings['bundle_cards'] as $card): ?>
-                            <div class="bundle-card reveal">
+                            <div class="bundle-card <?php echo esc_attr($reveal_class); ?>">
                                 <?php if (!empty($card['pill_text'])): ?>
                                     <span class="pill"><?php echo esc_html($card['pill_text']); ?></span>
                                 <?php endif; ?>
@@ -286,7 +289,7 @@ class SJA_Save_Bundles_Widget extends \Elementor\Widget_Base
                     $this->add_link_attributes('cta_btn', $settings['cta_button_link']);
                     $this->add_render_attribute('cta_btn', 'class', 'btn btn-green');
                     ?>
-                    <div style="text-align:center;margin-top:46px" class="reveal">
+                    <div style="text-align:center;margin-top:46px" class="<?php echo esc_attr($reveal_class); ?>">
                         <a <?php $this->print_render_attribute_string('cta_btn'); ?>>
                             <?php echo esc_html($settings['cta_button_text']); ?>
                         </a>

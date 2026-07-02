@@ -512,6 +512,27 @@
             animation: float-slow 6s ease-in-out infinite reverse;
         }
 
+        .hero .premium-badge {
+            position: absolute;
+            top: -70px;
+            right: -70px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle at 30% 30%, #a6e036, var(--green) 50%, var(--green-dark) 100%);
+            color: var(--navy);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            box-shadow: 0 20px 60px rgba(136, 189, 40, .35);
+            z-index: 3;
+        }
+
         .hero-card.c2 small {
             display: block;
             font-size: 11px;
@@ -989,6 +1010,7 @@
             }
         }
 
+        .premium-badge .label,
         .price-orb .label {
             font-size: 13px;
             font-weight: 800;
@@ -996,6 +1018,7 @@
             text-transform: uppercase
         }
 
+        .premium-badge .amount,
         .price-orb .amount {
             font-family: var(--font-display);
             font-size: 96px;
@@ -1003,6 +1026,11 @@
             line-height: 1
         }
 
+        .premium-badge .amount {
+            font-size: 60px;
+        }
+
+        .premium-badge .sub,
         .price-orb .sub {
             font-size: 14px;
             font-weight: 700
@@ -1014,6 +1042,8 @@
             margin: 24px 0;
             max-width: 520px
         }
+
+
 
         .no-fee li {
             display: flex;
