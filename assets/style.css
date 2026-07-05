@@ -643,9 +643,16 @@
             box-shadow: var(--shadow-card)
         }
 
-        .cat-card-icon {
+        .cat-card-head {
             position: relative;
             z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px
+        }
+
+        .cat-card-icon {
             width: 64px;
             height: 64px;
             flex-shrink: 0;
@@ -656,7 +663,6 @@
             display: grid;
             place-items: center;
             font-size: 30px;
-            margin-bottom: 22px;
             transition: transform .3s ease, box-shadow .3s ease, background .3s ease
         }
 
@@ -667,11 +673,8 @@
         }
 
         .cat-card h3 {
-            position: relative;
-            z-index: 1;
             color: #fff;
             font-size: 21px;
-            margin-bottom: 10px;
             font-weight: 700
         }
 

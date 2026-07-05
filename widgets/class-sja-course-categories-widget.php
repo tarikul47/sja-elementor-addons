@@ -195,10 +195,12 @@ class SJA_Course_Categories_Widget extends \Elementor\Widget_Base
 							$reveal_class = $is_editor ? '' : 'reveal'; // Removes opacity:0 wrapper inside editor
 							?>
 							<div class="cat-card <?php echo esc_attr($reveal_class); ?>">
-								<div class="cat-card-icon">
-									<?php echo esc_html($settings['category_icon']); ?>
+								<div class="cat-card-head">
+									<div class="cat-card-icon">
+										<?php echo esc_html($settings['category_icon']); ?>
+									</div>
+									<h3><?php echo esc_html($category->name); ?></h3>
 								</div>
-								<h3><?php echo esc_html($category->name); ?></h3>
 								<p><?php echo wp_kses_post($category->description); ?></p>
 								<a href="<?php echo esc_url(get_term_link($category)); ?>" class="cat-card-btn">
 									<?php echo esc_html($category->name); ?>
