@@ -3,6 +3,27 @@ if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
+if (function_exists('WC')) {
+	// "Buy Now" flow: clear the cart before WooCommerce adds the new item,
+	// so checkout only ever contains the single course being bought.
+	add_action('wp_loaded', function () {
+		if (!empty($_GET['sja_buy_now']) && isset($_GET['add-to-cart']) && is_numeric($_GET['add-to-cart'])) {
+			if (WC()->cart) {
+				WC()->cart->empty_cart();
+			}
+		}
+	}, 5);
+
+	// Some stores enable "Redirect to cart page after successful addition".
+	// Force our Buy Now links to land on checkout regardless of that setting.
+	add_filter('woocommerce_add_to_cart_redirect', function ($url) {
+		if (!empty($_GET['sja_buy_now'])) {
+			return wc_get_checkout_url();
+		}
+		return $url;
+	});
+}
+
 class SJA_Featured_Courses_Widget extends \Elementor\Widget_Base
 {
 
@@ -87,6 +108,33 @@ class SJA_Featured_Courses_Widget extends \Elementor\Widget_Base
 		);
 
 		$this->add_control(
+			'view_course_label',
+			[
+				'label' => __('View Course Button Label', 'sja-elementor-addons'),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => __('View Course', 'sja-elementor-addons'),
+			]
+		);
+
+		$this->add_control(
+			'buy_now_label',
+			[
+				'label' => __('Buy Now Button Label (paid courses)', 'sja-elementor-addons'),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => __('Buy Now', 'sja-elementor-addons'),
+			]
+		);
+
+		$this->add_control(
+			'enrol_label',
+			[
+				'label' => __('Enrol Button Label (free courses)', 'sja-elementor-addons'),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => __('Enrol', 'sja-elementor-addons'),
+			]
+		);
+
+		$this->add_control(
 			'view_all_label',
 			[
 				'label' => __('View All Button Label', 'sja-elementor-addons'),
@@ -155,6 +203,21 @@ class SJA_Featured_Courses_Widget extends \Elementor\Widget_Base
 							// Check if we are currently looking at the Elementor Editor backend
 							$is_editor = \Elementor\Plugin::$instance->editor->is_edit_mode();
 							$reveal_class = $is_editor ? '' : 'reveal'; // Removes opacity:0 wrapper inside editor
+
+							// Free vs paid course determines the CTA label ("Enrol" vs "Buy Now")
+							$is_free = floatval($product->get_price()) <= 0;
+							$buy_now_label = $is_free ? $settings['enrol_label'] : $settings['buy_now_label'];
+							$can_buy_now = $product->is_purchasable() && $product->is_in_stock();
+
+							// Buy Now skips the single product/cart pages and goes straight to checkout
+							$buy_now_url = add_query_arg(
+								[
+									'add-to-cart' => $product_id,
+									'quantity' => 1,
+									'sja_buy_now' => 1,
+								],
+								wc_get_checkout_url()
+							);
 							?>
 							<div class="course-card <?php echo esc_attr($reveal_class); ?>">
 								<div class="thumb"
@@ -168,9 +231,16 @@ class SJA_Featured_Courses_Widget extends \Elementor\Widget_Base
 									<p><?php echo wp_kses_post($product->get_short_description()); ?></p>
 									<div class="foot">
 										<div class="price"><?php echo $product->get_price_html(); ?></div>
-										<a href="<?php echo esc_url($product->get_permalink()); ?>" class="btn-link">
-											<?php _e('Enrol →', 'sja-elementor-addons'); ?>
-										</a>
+										<div class="actions">
+											<a href="<?php echo esc_url($product->get_permalink()); ?>" class="btn-view">
+												<?php echo esc_html($settings['view_course_label']); ?>
+											</a>
+											<?php if ($can_buy_now): ?>
+												<a href="<?php echo esc_url($buy_now_url); ?>" class="btn-buy-now">
+													<?php echo esc_html($buy_now_label); ?>
+												</a>
+											<?php endif; ?>
+										</div>
 									</div>
 								</div>
 							</div>

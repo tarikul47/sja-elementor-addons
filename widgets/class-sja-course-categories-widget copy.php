@@ -187,7 +187,7 @@ class SJA_Course_Categories_Widget extends \Elementor\Widget_Base
 
 				<?php if (!empty($categories) && !is_wp_error($categories)): ?>
 					<div class="cat-grid">
-						<?php foreach ($categories as $category):
+						<?php foreach ($categories as $category):				
 							$thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
 							$image_url = $thumbnail_id ? wp_get_attachment_url($thumbnail_id) : 'https://via.placeholder.com/400x300';
 							// Check if we are currently looking at the Elementor Editor backend
@@ -195,9 +195,7 @@ class SJA_Course_Categories_Widget extends \Elementor\Widget_Base
 							$reveal_class = $is_editor ? '' : 'reveal'; // Removes opacity:0 wrapper inside editor
 							?>
 							<div class="cat-card <?php echo esc_attr($reveal_class); ?>">
-								<div class="cat-card-icon">
-									<?php echo esc_html($settings['category_icon']); ?>
-								</div>
+								<div class="cat-card-icon"><?php echo esc_html($settings['category_icon']); ?></div>
 								<h3><?php echo esc_html($category->name); ?></h3>
 								<p><?php echo wp_kses_post($category->description); ?></p>
 								<a href="<?php echo esc_url(get_term_link($category)); ?>" class="cat-card-btn">

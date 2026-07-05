@@ -613,18 +613,29 @@
         .cat-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 26px;
+            gap: 28px;
             margin-top: 50px
         }
 
         .cat-card {
-            background: #fff;
-            border-radius: var(--radius);
+            position: relative;
+            aspect-ratio: 1 / 1;
+            background: linear-gradient(150deg, var(--navy) 0%, var(--navy-deep) 55%, var(--purple) 145%);
+            border-radius: 26px;
             overflow: hidden;
             box-shadow: var(--shadow-soft);
-            transition: all .3s ease;
+            padding: 38px 34px;
             display: flex;
-            flex-direction: column
+            flex-direction: column;
+            transition: transform .3s ease, box-shadow .3s ease
+        }
+
+        .cat-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(420px 260px at 100% 0%, rgba(206, 76, 252, .35), transparent 60%);
+            pointer-events: none
         }
 
         .cat-card:hover {
@@ -632,44 +643,78 @@
             box-shadow: var(--shadow-card)
         }
 
-        .cat-card .img {
-            height: 180px;
-            background-size: cover;
-            background-position: center;
-            position: relative
+        .cat-card-icon {
+            position: relative;
+            z-index: 1;
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+            border-radius: 18px;
+            background: linear-gradient(90deg, var(--purple), var(--purple-bright));
+            border: 1px solid rgba(255, 255, 255, .18);
+            box-shadow: 0 12px 28px rgba(162, 65, 227, .4);
+            display: grid;
+            place-items: center;
+            font-size: 30px;
+            margin-bottom: 22px;
+            transition: transform .3s ease, box-shadow .3s ease, background .3s ease
         }
 
-        .cat-card .img::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(4, 19, 70, 0) 40%, rgba(4, 19, 70, .65))
-        }
-
-        .cat-card .body {
-            padding: 26px;
-            flex: 1;
-            display: flex;
-            flex-direction: column
+        .cat-card:hover .cat-card-icon {
+            background: linear-gradient(90deg, var(--purple-bright), var(--purple));
+            box-shadow: 0 16px 34px rgba(206, 76, 252, .5);
+            transform: translateY(-2px)
         }
 
         .cat-card h3 {
-            color: var(--navy);
-            font-size: 20px;
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            font-size: 21px;
             margin-bottom: 10px;
             font-weight: 700
         }
 
         .cat-card p {
-            color: #566089;
+            position: relative;
+            z-index: 1;
+            color: rgba(255, 255, 255, .72);
             font-size: 14.5px;
+            line-height: 1.6;
             flex: 1;
-            margin-bottom: 16px
+            margin-bottom: 24px
+        }
+
+        .cat-card-btn {
+            position: relative;
+            z-index: 1;
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, var(--purple), var(--purple-bright));
+            color: #fff;
+            font-weight: 700;
+            font-size: 14.5px;
+            padding: 14px 26px;
+            border-radius: 50px;
+            box-shadow: 0 12px 28px rgba(162, 65, 227, .4);
+            transition: transform .2s ease, box-shadow .2s ease, background .2s ease
+        }
+
+        .cat-card-btn:hover {
+            background: linear-gradient(90deg, var(--purple-bright), var(--purple));
+            transform: translateY(-2px);
+            box-shadow: 0 16px 34px rgba(206, 76, 252, .5)
         }
 
         @media(max-width:900px) {
             .cat-grid {
                 grid-template-columns: 1fr
+            }
+
+            .cat-card {
+                aspect-ratio: auto
             }
         }
 
@@ -947,8 +992,8 @@
 
         .course-card .foot {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 14px;
             padding-top: 14px;
             border-top: 1px solid #eef0f7
         }
@@ -967,6 +1012,44 @@
             display: block;
             text-transform: uppercase;
             letter-spacing: .1em
+        }
+
+        .course-card .actions {
+            display: flex;
+            gap: 10px
+        }
+
+        .course-card .btn-view,
+        .course-card .btn-buy-now {
+            flex: 1;
+            text-align: center;
+            padding: 12px 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 13.5px;
+            transition: all .2s ease
+        }
+
+        .course-card .btn-view {
+            border: 1.5px solid var(--navy);
+            color: var(--navy);
+            background: transparent
+        }
+
+        .course-card .btn-view:hover {
+            background: var(--navy);
+            color: #fff
+        }
+
+        .course-card .btn-buy-now {
+            color: #fff;
+            background: linear-gradient(90deg, var(--purple), var(--purple-bright));
+            box-shadow: 0 10px 24px rgba(162, 65, 227, .35)
+        }
+
+        .course-card .btn-buy-now:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(206, 76, 252, .45)
         }
 
         @media(max-width:900px) {
