@@ -945,7 +945,7 @@
         }
 
         .course-card .thumb {
-            height: 170px;
+            height: 250px;
             background: linear-gradient(135deg, var(--navy), var(--purple));
             position: relative;
             display: grid;
