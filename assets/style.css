@@ -738,7 +738,8 @@
         .divider-cta h3 {
             font-size: 28px;
             font-weight: 800;
-            margin-bottom: 6px
+            margin-bottom: 6px;
+            color: #ffffff;
         }
 
         .divider-cta p {
