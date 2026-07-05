@@ -203,7 +203,14 @@ class SJA_Featured_Courses_Widget extends \Elementor\Widget_Base
 							// Check if we are currently looking at the Elementor Editor backend
 							$is_editor = \Elementor\Plugin::$instance->editor->is_edit_mode();
 							$reveal_class = $is_editor ? '' : 'reveal'; // Removes opacity:0 wrapper inside editor
-
+			
+							// Prefer the short description; fall back to a trimmed excerpt of
+							// the full description when the short description is empty.
+							$short_description = $product->get_short_description();
+							//	if (empty($short_description)) {
+							//$short_description = wp_trim_words(wp_strip_all_tags($product->get_description()), 20);
+							//}
+			
 							// Free vs paid course determines the CTA label ("Enrol" vs "Buy Now")
 							$is_free = floatval($product->get_price()) <= 0;
 							$buy_now_label = $is_free ? $settings['enrol_label'] : $settings['buy_now_label'];
@@ -228,7 +235,7 @@ class SJA_Featured_Courses_Widget extends \Elementor\Widget_Base
 								</div>
 								<div class="body">
 									<h3><?php echo esc_html($product->get_name()); ?></h3>
-									<p><?php echo wp_kses_post($product->get_short_description()); ?></p>
+									<p><?php echo wp_kses_post($short_description); ?></p>
 									<div class="foot">
 										<div class="price"><?php echo $product->get_price_html(); ?></div>
 										<div class="actions">
